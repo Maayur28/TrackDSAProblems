@@ -182,6 +182,7 @@ const sortDiff = (arr) => {
 };
 userModel.getProbOfTheDay = async () => {
   // await dbModel.addSheet();
+  // console.log(getTime());
   let model = await dbModel.getProblemsOfTheDayConnection();
   let total = await model.find({}, { _id: 0, __v: 0 });
   let recordTime = moment(total[0].time);
@@ -204,7 +205,7 @@ userModel.getProbOfTheDay = async () => {
       if (add1.nModified) {
         let add2 = await model.updateOne({
           $push: {
-            previous: { $each: total[0].current },
+            problems: { $each: total[0].current },
           },
         });
         if (add2) {

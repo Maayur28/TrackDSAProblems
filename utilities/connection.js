@@ -56,7 +56,6 @@ const probtimeSchema = mongoose.Schema({
   time: { type: String, default: "" },
   problems: [proboftheDaySchema],
   current: [proboftheDaySchema],
-  previous: [proboftheDaySchema],
 });
 const prodtotalSchema = mongoose.Schema({
   userid: { type: String, required: [true, "userid is required"] },
@@ -141,9 +140,9 @@ connection.getFrazSheetConnection = async () => {
   }
 };
 connection.addSheet = async () => {
-  let model = await connection.getStriverSheetConnection();
+  let model = await connection.getProblemsOfTheDayConnection();
   await model.deleteMany({});
-  // await model.create(sheet.striverSheet);
+  //await model.create(sheet.problemsOfTheDay);
   let arr = [
     {
       topic: "Array",
