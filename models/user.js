@@ -28,7 +28,7 @@ userModel.addtoProblem = async (prod) => {
       {
         let addprod = await model.updateOne(
           { userid: obj.userid },
-          { $push: { problems: prod } }
+          { $push: { problems: { $each: prod.problems } } }
         );
         if (addprod.nModified > 0)
           return sorting(await model.findOne({ userid: obj.userid }));
@@ -53,7 +53,7 @@ userModel.addtoProblem = async (prod) => {
     if (findProb.length == 0) {
       let pushitem = await model.updateOne(
         { userid: id },
-        { $push: { problems: prod } }
+        { $push: { problems: { $each: prod.problems } } }
       );
       if (pushitem.nModified > 0) {
         return sorting(await model.findOne({ userid: id }));
