@@ -116,7 +116,7 @@ userModel.deleteProblem = async (obj) => {
   let model = await dbModel.getProductConnection();
   let getTrack = await model.updateOne(
     { userid: obj.userid },
-    { $pull: { problems: { _id: obj._id } } }
+    { $pull: { problems: { _id: { $in: obj.problems } } } }
   );
   if (getTrack.nModified > 0) {
     return sorting(await model.findOne({ userid: obj.userid }));
