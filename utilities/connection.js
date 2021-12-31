@@ -46,7 +46,7 @@ const sheetFrazSchema = mongoose.Schema({
 });
 const proboftheDaySchema = mongoose.Schema({
   title: { type: String, required: [true, "Title is required"] },
-  topic: { type: [String], required: [true, "Topic is required"] },
+  topic: { type: [String] },
   status: { type: Boolean, default: false },
   difficulty: { type: String },
   note: { type: String, default: "" },

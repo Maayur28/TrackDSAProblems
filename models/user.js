@@ -169,17 +169,18 @@ const createProblem = (problems) => {
     easy = 0,
     medium = 0,
     hard = 0;
-  for (let i = 0; i < problems.length; i++) {
-    if (problems[i].difficulty == "1" && easy == 0) {
-      arr.push(problems[i]);
+  while (true) {
+    let ran = Math.floor(Math.random() * problems.length);
+    if (problems[ran].difficulty == "1" && easy == 0) {
+      arr.push(problems[ran]);
       easy = 1;
     }
-    if (problems[i].difficulty == "2" && medium == 0) {
-      arr.push(problems[i]);
+    if (problems[ran].difficulty == "2" && medium == 0) {
+      arr.push(problems[ran]);
       medium = 1;
     }
-    if (problems[i].difficulty == "3" && hard == 0) {
-      arr.push(problems[i]);
+    if (problems[ran].difficulty == "3" && hard == 0) {
+      arr.push(problems[ran]);
       hard = 1;
     }
     if (easy && medium && hard) break;
