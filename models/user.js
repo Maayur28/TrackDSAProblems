@@ -10,6 +10,17 @@ const sorting = (count) => {
     return sorted;
   } else return [];
 };
+
+const checkDuplicate = (arr, db) => {
+  let ds = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (db.find((val) => val._id == arr[i]._id) == undefined) {
+      ds.push(arr[i]);
+    }
+  }
+  return ds;
+};
+
 userModel.getProblems = async (userid) => {
   let model = await dbModel.getProductConnection();
   return sorting(await model.findOne({ userid: userid }));
@@ -49,8 +60,8 @@ userModel.addtoProblem = async (prod) => {
   } else {
     let id = prod.userid;
     delete prod.userid;
-    let findProb = await model.find({ userid: id, "problems._id": prod._id });
-    if (findProb.length == 0) {
+    prod.problems = [...checkDuplicate(prod.problems, getprob.problems)];
+    if (prod.problems.length > 0) {
       let pushitem = await model.updateOne(
         { userid: id },
         { $push: { problems: { $each: prod.problems } } }
