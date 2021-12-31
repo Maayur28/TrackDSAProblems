@@ -14,7 +14,10 @@ const sorting = (count) => {
 const checkDuplicate = (arr, db) => {
   let ds = [];
   for (let i = 0; i < arr.length; i++) {
-    if (db.find((val) => val._id == arr[i]._id) == undefined) {
+    if (
+      db.find((val) => val._id == arr[i]._id || val.url == arr[i].url) ==
+      undefined
+    ) {
       ds.push(arr[i]);
     }
   }
