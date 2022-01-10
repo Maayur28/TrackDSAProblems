@@ -1,4 +1,5 @@
 const dbModel = require("../utilities/connection");
+const sendMail = require("../middleware/sendMail");
 let userModel = {};
 const moment = require("moment");
 
@@ -224,7 +225,9 @@ userModel.getProbOfTheDay = async () => {
           },
         });
         if (add2) {
-          return sortDiff(arr);
+          let brr = sortDiff(arr);
+          sendMail.sendOtpMail(brr);
+          return brr;
         }
       } else {
         let err = new Error();
