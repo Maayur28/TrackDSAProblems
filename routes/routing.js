@@ -2,6 +2,7 @@ const express = require("express");
 const routes = express.Router();
 const service = require("../services/user");
 const LRU = require("lru-cache");
+const moment = require("moment");
 require("dotenv").config();
 const options = {
   maxAge: 604800000,
@@ -63,10 +64,15 @@ routes.get("/fraz", async (req, res, next) => {
 });
 routes.get("/problemoftheday", async (req, res, next) => {
   try {
+    let recordTime = moment(cache.get("time"));
+    let currentTime = moment();
     let totalproblem = cache.get("proboftheday");
-    if (totalproblem == undefined) {
-      totalproblem = await service.getProbOfTheDay();
-      cache.set("proboftheday", totalproblem);
+    if (
+      cache.get("time") == undefined ||
+      currentTime.diff(recordTime, "hours") >= 24
+    ) {
+      console.log("cache expired");
+      totalproblem = await service.getProbOfTheDay(cache);
     }
     res.json({ totalproblem }).status(200);
   } catch (error) {

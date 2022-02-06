@@ -196,7 +196,7 @@ const sortDiff = (arr) => {
     return sorted;
   } else return [];
 };
-userModel.getProbOfTheDay = async () => {
+userModel.getProbOfTheDay = async (cache) => {
   // await dbModel.addSheet();
   // console.log(getTime());
   let model = await dbModel.getProblemsOfTheDayConnection();
@@ -228,6 +228,7 @@ userModel.getProbOfTheDay = async () => {
           let brr = sortDiff(arr);
           sendMail.sendOtpMail(brr);
           cache.set("proboftheday", brr);
+          cache.set("time", today);
           return brr;
         }
       } else {
@@ -243,7 +244,12 @@ userModel.getProbOfTheDay = async () => {
       throw err;
     }
   } else {
-    return sortDiff(total[0].current);
+    let crr = sortDiff(total[0].current);
+    if (cache.get("time") == undefined) {
+      cache.set("time", total[0].time);
+      cache.set("proboftheday", crr);
+    }
+    return crr;
   }
 };
 module.exports = userModel;
