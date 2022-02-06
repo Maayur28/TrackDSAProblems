@@ -1,7 +1,13 @@
 const express = require("express");
 const routes = express.Router();
 const service = require("../services/user");
+const LRU = require("lru-cache");
 require("dotenv").config();
+const options = {
+  maxAge: 604800000,
+};
+
+const cache = new LRU(options);
 
 routes.get("/getproblems/:userid", async (req, res, next) => {
   try {
@@ -21,7 +27,11 @@ routes.post("/addproblem", async (req, res, next) => {
 });
 routes.get("/lovebabbar", async (req, res, next) => {
   try {
-    let totalProblem = await service.getLoveBabbarSheet();
+    let totalProblem = cache.get("lovebabbar");
+    if (totalProblem == undefined) {
+      totalProblem = await service.getLoveBabbarSheet();
+      cache.set("lovebabbar", totalProblem);
+    }
     res.json({ totalProblem }).status(200);
   } catch (error) {
     next(error);
@@ -29,7 +39,11 @@ routes.get("/lovebabbar", async (req, res, next) => {
 });
 routes.get("/striver", async (req, res, next) => {
   try {
-    let totalProblem = await service.getStriverSheet();
+    let totalProblem = cache.get("striver");
+    if (totalProblem == undefined) {
+      totalProblem = await service.getStriverSheet();
+      cache.set("striver", totalProblem);
+    }
     res.json({ totalProblem }).status(200);
   } catch (error) {
     next(error);
@@ -37,7 +51,11 @@ routes.get("/striver", async (req, res, next) => {
 });
 routes.get("/fraz", async (req, res, next) => {
   try {
-    let totalProblem = await service.getFrazSheet();
+    let totalProblem = cache.get("fraz");
+    if (totalProblem == undefined) {
+      totalProblem = await service.getFrazSheet();
+      cache.set("fraz", totalProblem);
+    }
     res.json({ totalProblem }).status(200);
   } catch (error) {
     next(error);
@@ -45,7 +63,11 @@ routes.get("/fraz", async (req, res, next) => {
 });
 routes.get("/problemoftheday", async (req, res, next) => {
   try {
-    let totalproblem = await service.getProbOfTheDay();
+    let totalproblem = cache.get("proboftheday");
+    if (totalproblem == undefined) {
+      totalproblem = await service.getProbOfTheDay();
+      cache.set("proboftheday", totalproblem);
+    }
     res.json({ totalproblem }).status(200);
   } catch (error) {
     next(error);

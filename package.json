@@ -18,6 +18,7 @@
     "joi": "^17.4.0",
     "jsdom": "^16.5.3",
     "jsonwebtoken": "^8.5.1",
+    "lru-cache": "^6.0.0",
     "moment": "^2.29.1",
     "mongodb": "^3.6.6",
     "mongoose": "^5.12.3",
