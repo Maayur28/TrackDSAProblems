@@ -29,8 +29,8 @@ userService.getStriverSheet = async () => {
 userService.getFrazSheet = async () => {
   return await model.getFrazSheet();
 };
-userService.getProbOfTheDay = async (cache) => {
-  return await model.getProbOfTheDay(cache);
+userService.getProbOfTheDay = async () => {
+  return await model.getProbOfTheDay();
 };
 userService.editProblem = async (obj) => {
   return await model.editProblem(obj);
