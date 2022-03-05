@@ -227,8 +227,6 @@ userModel.getProbOfTheDay = async () => {
         if (add2) {
           let brr = sortDiff(arr);
           sendMail.sendOtpMail(brr);
-          cache.set("proboftheday", brr);
-          cache.set("time", today);
           return brr;
         }
       } else {

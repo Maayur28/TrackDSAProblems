@@ -3,14 +3,22 @@ sendMailObj = {};
 
 sendMailObj.sendOtpMail = (arr) => {
   const transport = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtpout.secureserver.net",
+    secure: true,
+    secureConnection: false, // TLS requires secureConnection to be false
+    tls: {
+      ciphers: "SSLv3",
+    },
+    requireTLS: true,
+    port: 465,
+    debug: true,
     auth: {
       user: process.env.email,
       pass: process.env.password,
     },
   });
   const message = {
-    from: "trackdsa28@gmail.com",
+    from: process.env.email,
     to: "mayuragarwal2812@gmail.com",
     subject: "Problems of the day",
     html: `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2;color:black">
