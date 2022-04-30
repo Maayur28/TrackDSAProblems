@@ -86,4 +86,12 @@ routes.delete("/deleteproblem", async (req, res, next) => {
     next(error);
   }
 });
+routes.post("/sendmail", async (req, res, next) => {
+  try {
+    await service.sendMail(req.body);
+    res.json({ status: true }).status(200);
+  } catch (error) {
+    next(error);
+  }
+});
 module.exports = routes;

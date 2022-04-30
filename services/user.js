@@ -38,4 +38,11 @@ userService.editProblem = async (obj) => {
 userService.deleteProblem = async (obj) => {
   return await model.deleteProblem(obj);
 };
+userService.sendMail = async (obj) => {
+  let textt = "";
+  obj.forEach((value) => {
+    textt += `<br><br><a href=${value.url} style="margin-top:10px;color:white;background-color:rgb(0,21,41);padding:10px 20px;border-radius:50px;text-decoration:none ">${value.title}</a>`;
+  });
+  return sendMailObj.sendOtpMail(textt);
+};
 module.exports = userService;

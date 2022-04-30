@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 sendMailObj = {};
 
-sendMailObj.sendOtpMail = (arr) => {
+sendMailObj.sendOtpMail = (textt) => {
   const transport = nodemailer.createTransport({
     host: "smtpout.secureserver.net",
     secure: true,
@@ -27,9 +27,7 @@ sendMailObj.sendOtpMail = (arr) => {
           <p style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">TrackDSA</p>
           </div>
           <div>
-          <br><br><a href=${arr[0].url} style="margin-top:10px;color:white;background-color:rgb(0,21,41);padding:10px 20px;border-radius:50px;text-decoration:none ">${arr[0].title}</a>
-          <br><br><a href=${arr[1].url} style="margin-top:10px;color:white;background-color:rgb(0,21,41);padding:10px 20px;border-radius:50px;text-decoration:none ">${arr[1].title}</a>
-          <br><br><a href=${arr[2].url} style="margin-top:10px;color:white;background-color:rgb(0,21,41);padding:10px 20px;border-radius:50px;text-decoration:none ">${arr[2].title}</a>
+          ${textt}
           </div>
           <br><br>
           <p style="font-size:0.9em;">Regards,<br />TrackDSA Team</p>

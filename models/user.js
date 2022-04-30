@@ -226,7 +226,11 @@ userModel.getProbOfTheDay = async () => {
         });
         if (add2) {
           let brr = sortDiff(arr);
-          sendMail.sendOtpMail(brr);
+          let textt = "";
+          brr.forEach((value) => {
+            textt += `<br><br><a href=${value.url} style="margin-top:10px;color:white;background-color:rgb(0,21,41);padding:10px 20px;border-radius:50px;text-decoration:none ">${value.title}</a>`;
+          });
+          sendMail.sendOtpMail(textt);
           return brr;
         }
       } else {
