@@ -57,9 +57,19 @@ const probtimeSchema = mongoose.Schema({
   problems: [proboftheDaySchema],
   current: [proboftheDaySchema],
 });
+
 const prodtotalSchema = mongoose.Schema({
   userid: { type: String, required: [true, "userid is required"] },
   problems: [prodSchema],
+});
+const noteSchema = mongoose.Schema({
+  title: { type: String, required: [true, "Title is required"] },
+  note: { type: String, default: "" },
+  time: { type: Date, default: Date.now },
+});
+const notetotalSchema = mongoose.Schema({
+  userid: { type: String, required: [true, "userid is required"] },
+  notes: [noteSchema],
 });
 let connection = {};
 connection.getProductConnection = async () => {
@@ -75,6 +85,21 @@ connection.getProductConnection = async () => {
     throw err;
   }
 };
+
+connection.getNoteConnection = async () => {
+  try {
+    let dbConnection = await mongoose.connect(url, options);
+    let model = dbConnection.model("Notes", notetotalSchema, "notes");
+    return model;
+  } catch (error) {
+    let err = new Error(
+      "Could not establish connection with DSAtracker database"
+    );
+    err.status = 500;
+    throw err;
+  }
+};
+
 connection.getProblemsOfTheDayConnection = async () => {
   try {
     let dbConnection = await mongoose.connect(url, options);

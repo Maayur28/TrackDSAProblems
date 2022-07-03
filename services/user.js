@@ -6,10 +6,17 @@ let userService = {};
 userService.getProblems = async (userid) => {
   return await model.getProblems(userid);
 };
+userService.getNotes = async (userid) => {
+  return await model.getNotes(userid);
+};
 
 userService.addtoProblem = async (obj) => {
   return await model.addtoProblem(obj);
 };
+userService.addtoNote = async (obj) => {
+  return await model.addtoNote(obj);
+};
+
 userService.getfromOrder = async (userid) => {
   // if (validator.getfromOrder(userid))
   if (true) return await model.getfromOrder(userid);
@@ -35,8 +42,14 @@ userService.getProbOfTheDay = async () => {
 userService.editProblem = async (obj) => {
   return await model.editProblem(obj);
 };
+userService.editNote = async (obj) => {
+  return await model.editNote(obj);
+};
 userService.deleteProblem = async (obj) => {
   return await model.deleteProblem(obj);
+};
+userService.deleteNote = async (obj) => {
+  return await model.deleteNote(obj);
 };
 userService.sendMail = async (obj) => {
   let textt = "";

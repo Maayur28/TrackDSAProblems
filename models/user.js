@@ -11,6 +11,14 @@ const sorting = (count) => {
     return sorted;
   } else return [];
 };
+const sortingNote = (count) => {
+  if (count && count.notes.length > 0) {
+    const sorted = count.notes.sort(
+      (a, b) => new Date(b.time) - new Date(a.time)
+    );
+    return sorted;
+  } else return [];
+};
 
 const checkDuplicate = (arr, db) => {
   let ds = [];
@@ -86,6 +94,59 @@ userModel.addtoProblem = async (prod) => {
     }
   }
 };
+
+userModel.getNotes = async (userid) => {
+  let model = await dbModel.getNoteConnection();
+  return sortingNote(await model.findOne({ userid: userid }));
+};
+userModel.addtoNote = async (prod) => {
+  let model = await dbModel.getNoteConnection();
+  let getprob = await model.findOne({ userid: prod.userid });
+  if (!getprob) {
+    let obj = {};
+    obj.userid = prod.userid;
+    delete prod.userid;
+    obj.problems = [];
+    let addproblem = await model.create(obj);
+    if (addproblem) {
+      {
+        let addprod = await model.updateOne(
+          { userid: obj.userid },
+          { $push: { notes: { $each: prod.notes } } }
+        );
+        if (addprod.nModified > 0)
+          return sorting(await model.findOne({ userid: obj.userid }));
+        else {
+          let err = new Error();
+          err.status = 500;
+          err.message =
+            "Sorry! Server is busy,Please try adding after sometime";
+          throw err;
+        }
+      }
+    } else {
+      let err = new Error();
+      err.status = 500;
+      err.message = "Sorry! Server is busy,Please try adding after sometime";
+      throw err;
+    }
+  } else {
+    let id = prod.userid;
+    delete prod.userid;
+    let pushitem = await model.updateOne(
+      { userid: id },
+      { $push: { notes: { $each: prod.notes } } }
+    );
+    if (pushitem.nModified > 0) {
+      return sortingNote(await model.findOne({ userid: id }));
+    } else {
+      let err = new Error();
+      err.status = 500;
+      err.message = "Sorry! Server is busy,Please try adding after sometime";
+      throw err;
+    }
+  }
+};
 userModel.getfromOrder = async () => {
   let model = await dbModel.getProductConnection();
   let count = await model.findOne({}, { trackingItem: 1, _id: 0 });
@@ -127,6 +188,27 @@ userModel.editProblem = async (prod) => {
   }
 };
 
+userModel.editNote = async (prod) => {
+  let model = await dbModel.getNoteConnection();
+  let updateQuan = await model.updateOne(
+    { userid: prod.userid, "notes._id": prod._id },
+    {
+      $set: {
+        "notes.$.title": prod.title,
+        "notes.$.note": prod.note,
+      },
+    }
+  );
+  if (updateQuan.nModified == 0) {
+    let err = new Error();
+    err.status = 500;
+    err.message = "Sorry!Server is busy.Please try to update quantity later";
+    throw err;
+  } else {
+    return sortingNote(await model.findOne({ userid: prod.userid }));
+  }
+};
+
 userModel.deleteProblem = async (obj) => {
   let model = await dbModel.getProductConnection();
   let getTrack = await model.updateOne(
@@ -135,6 +217,22 @@ userModel.deleteProblem = async (obj) => {
   );
   if (getTrack.nModified > 0) {
     return sorting(await model.findOne({ userid: obj.userid }));
+  } else {
+    let err = new Error();
+    err.status = 501;
+    err.message = "Sorry!Server is busy.Please try to remove later";
+    throw err;
+  }
+};
+
+userModel.deleteNote = async (obj) => {
+  let model = await dbModel.getNoteConnection();
+  let getTrack = await model.updateOne(
+    { userid: obj.userid },
+    { $pull: { notes: { _id: obj._id } } }
+  );
+  if (getTrack.nModified > 0) {
+    return sortingNote(await model.findOne({ userid: obj.userid }));
   } else {
     let err = new Error();
     err.status = 501;

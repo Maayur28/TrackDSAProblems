@@ -18,10 +18,28 @@ routes.get("/getproblems/:userid", async (req, res, next) => {
     next(error);
   }
 });
+
+routes.get("/getnotes/:userid", async (req, res, next) => {
+  try {
+    let totalnote = await service.getNotes(req.params.userid);
+    res.json({ totalnote }).status(200);
+  } catch (error) {
+    next(error);
+  }
+});
+
 routes.post("/addproblem", async (req, res, next) => {
   try {
     let totalproblem = await service.addtoProblem(req.body);
     res.json({ totalproblem }).status(200);
+  } catch (error) {
+    next(error);
+  }
+});
+routes.post("/addnote", async (req, res, next) => {
+  try {
+    let totalnote = await service.addtoNote(req.body);
+    res.json({ totalnote }).status(200);
   } catch (error) {
     next(error);
   }
@@ -78,10 +96,27 @@ routes.put("/editproblem", async (req, res, next) => {
     next(error);
   }
 });
+routes.put("/editnote", async (req, res, next) => {
+  try {
+    let totalnote = await service.editNote(req.body);
+    res.json({ totalnote }).status(200);
+  } catch (error) {
+    next(error);
+  }
+});
+
 routes.delete("/deleteproblem", async (req, res, next) => {
   try {
     let totalproblem = await service.deleteProblem(req.body);
     res.json({ totalproblem }).status(200);
+  } catch (error) {
+    next(error);
+  }
+});
+routes.delete("/deletenote", async (req, res, next) => {
+  try {
+    let totalnote = await service.deleteNote(req.body);
+    res.json({ totalnote }).status(200);
   } catch (error) {
     next(error);
   }
