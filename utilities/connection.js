@@ -65,6 +65,7 @@ const prodtotalSchema = mongoose.Schema({
 const noteSchema = mongoose.Schema({
   title: { type: String, required: [true, "Title is required"] },
   note: { type: String, default: "" },
+  group: { type: String, default: "" },
   time: { type: Date, default: Date.now },
 });
 const notetotalSchema = mongoose.Schema({
