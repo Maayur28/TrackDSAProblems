@@ -18,7 +18,7 @@ app.use(requestLogger);
 app.use("/", routing);
 app.use(errorLogger);
 
-app.listen(process.env.PORT||5000, (err) => {
+app.listen(process.env.PORT || 8080, (err) => {
   if (!err)
     console.log(`Problem Server is started at port ${process.env.PORT}`);
   else console.log("Error in problem server setup");
