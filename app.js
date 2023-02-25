@@ -20,7 +20,9 @@ app.use(errorLogger);
 
 app.listen(process.env.PORT || 8080, (err) => {
   if (!err)
-    console.log(`Problem Server is started at port ${process.env.PORT}`);
+    console.log(
+      `Problem Server is started at port ${process.env.PORT || 8080}`
+    );
   else console.log("Error in problem server setup");
 });
 
