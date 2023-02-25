@@ -129,4 +129,13 @@ routes.post("/sendmail", async (req, res, next) => {
     next(error);
   }
 });
+
+routes.get("/", async (req, res, next) => {
+  try {
+    res.json("Ping Successful").status(200);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = routes;
