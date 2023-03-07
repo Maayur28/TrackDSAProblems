@@ -175,6 +175,9 @@ userModel.editProblem = async (prod) => {
         "problems.$.topic": prod.topic,
         "problems.$.url": prod.url,
         "problems.$.status": prod.status,
+        "problems.$.time": moment()
+          .utcOffset("+05:30")
+          .format("MMMM Do YYYY, h:mm:ss a"),
       },
     }
   );

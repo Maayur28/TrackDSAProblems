@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const sheet = require("./problemofday");
+const moment = require("moment");
 mongoose.Promise = global.Promise;
 require("dotenv").config();
 
@@ -18,7 +19,10 @@ const prodSchema = mongoose.Schema({
   difficulty: { type: String, required: [true, "Difficulty is required"] },
   note: { type: String, default: "" },
   url: { type: String, default: "" },
-  time: { type: Date, default: Date.now },
+  time: {
+    type: String,
+    default: moment().utcOffset("+05:30").format("MMMM Do YYYY, h:mm:ss a"),
+  },
 });
 const sheetloveBabbarSchema = mongoose.Schema({
   title: { type: String, required: [true, "Title is required"] },
