@@ -6,16 +6,14 @@ const moment = require("moment");
 const sorting = (count) => {
   if (count && count.problems.length > 0) {
     const sorted = count.problems.sort(
-      (a, b) => new Date(b.time) - new Date(a.time)
+      (a, b) => moment(b.time) - moment(a.time)
     );
     return sorted;
   } else return [];
 };
 const sortingNote = (count) => {
   if (count && count.notes.length > 0) {
-    const sorted = count.notes.sort(
-      (a, b) => new Date(b.time) - new Date(a.time)
-    );
+    const sorted = count.notes.sort((a, b) => moment(b.time) - moment(a.time));
     return sorted;
   } else return [];
 };
