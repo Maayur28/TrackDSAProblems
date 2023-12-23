@@ -4,7 +4,7 @@ const moment = require("moment");
 mongoose.Promise = global.Promise;
 require("dotenv").config();
 
-const url = process.env.URL;
+const url = process.env.MONGODB_URI;
 const options = {
   useNewUrlParser: true,
   useFindAndModify: false,
