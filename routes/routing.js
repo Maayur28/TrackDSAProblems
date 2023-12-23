@@ -2,7 +2,6 @@ const express = require("express");
 const routes = express.Router();
 const service = require("../services/user");
 const LRU = require("lru-cache");
-const moment = require("moment");
 require("dotenv").config();
 const options = {
   maxAge: 604800000,

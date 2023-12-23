@@ -5,10 +5,6 @@ const routing = require("./routes/routing");
 const errorLogger = require("./utilities/errorLogger");
 const helmet = require("helmet");
 const app = express();
-const sheet = require("./utilities/problemofday");
-const axios = require("axios");
-const cheerio = require("cheerio");
-const addData = require("./utilities/addData");
 
 app.use(cors());
 app.use(helmet());
