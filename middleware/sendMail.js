@@ -43,8 +43,8 @@ sendMailObj.sendOtpMail = (textt) => {
   transport.sendMail(message, (error, info) => {
     if (error) {
       console.log(error);
-      throw error;
     } else {
+      console.log(info);
       console.log("success");
     }
   });
