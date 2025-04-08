@@ -1,32 +1,53 @@
-# Use an official Node.js runtime as a base image
-FROM node:21-alpine
+# Stage 1: Dependency installation
+FROM node:18-buster-slim AS deps
 
-# Set the working directory in the container
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json to the working directory
+# Copy package files only
 COPY package*.json ./
 
+# Optional: Set npm fetch retry options for network stability
+RUN npm config set fetch-retries 5 && \
+    npm config set fetch-retry-mintimeout 20000 && \
+    npm config set fetch-retry-maxtimeout 120000
+
+# Install dependencies
+RUN npm install --force
+
+# Stage 2: Build and run
+FROM node:18-buster-slim
+
+WORKDIR /usr/src/app
+
+# Copy installed node_modules from deps stage
+COPY --from=deps /usr/src/app/node_modules ./node_modules
+
+# Copy the rest of the application
+COPY . .
+
+# ARGs (used only at build time)
+ARG email
 ARG password
+ARG MY_EMAIL
 ARG TOKEN_SECRET
 ARG MONGODB_URI
 
+# Environment variables (should ideally be set at runtime for security)
+ENV email=$email
 ENV password=$password
+ENV MY_EMAIL=$MY_EMAIL
 ENV TOKEN_SECRET=$TOKEN_SECRET
 ENV MONGODB_URI=$MONGODB_URI
 
-RUN echo "The ENV variable password value is $password"
-RUN echo "The ENV variable TOKEN_SECRET value is $TOKEN_SECRET"
-RUN echo "The ENV variable MONGODB_URI value is $MONGODB_URI"
+# For debugging: You can remove these later
+RUN echo "ENV email = $email" && \
+    echo "ENV password = $password" && \
+    echo "ENV MY_EMAIL = $MY_EMAIL" && \
+    echo "ENV TOKEN_SECRET = $TOKEN_SECRET" && \
+    echo "ENV MONGODB_URI = $MONGODB_URI"
 
-# Install the application dependencies
-RUN npm install
-
-# Copy the application code to the working directory
-COPY . .
-
-# Expose the port the app runs on
+# Expose application port
 EXPOSE 8080
 
-# Define the command to run your application
-CMD [ "node", "index.js" ]
+# Start app
+CMD ["node", "index.js"]

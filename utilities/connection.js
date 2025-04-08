@@ -5,11 +5,7 @@ mongoose.Promise = global.Promise;
 require("dotenv").config();
 
 const url = process.env.MONGODB_URI;
-const options = {
-  useNewUrlParser: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true,
-};
+
 
 const prodSchema = mongoose.Schema({
   // id: { type: String },
@@ -79,12 +75,12 @@ const notetotalSchema = mongoose.Schema({
 let connection = {};
 connection.getProductConnection = async () => {
   try {
-    let dbConnection = await mongoose.connect(url, options);
-    let model = dbConnection.model("Problems", prodtotalSchema, "problems");
+    let dbConnection = await mongoose.connect(url);
+    let model = dbConnection.model("Problems", prodtotalSchema,"Problems");
     return model;
   } catch (error) {
     let err = new Error(
-      "Could not establish connection with DSAtracker database"
+      "Could not establish connection with database"
     );
     err.status = 500;
     throw err;
@@ -93,12 +89,12 @@ connection.getProductConnection = async () => {
 
 connection.getNoteConnection = async () => {
   try {
-    let dbConnection = await mongoose.connect(url, options);
-    let model = dbConnection.model("Notes", notetotalSchema, "notes");
+    let dbConnection = await mongoose.connect(url);
+    let model = dbConnection.model("Notes", notetotalSchema,"Notes");
     return model;
   } catch (error) {
     let err = new Error(
-      "Could not establish connection with DSAtracker database"
+      "Could not establish connection with database"
     );
     err.status = 500;
     throw err;
@@ -107,16 +103,17 @@ connection.getNoteConnection = async () => {
 
 connection.getProblemsOfTheDayConnection = async () => {
   try {
-    let dbConnection = await mongoose.connect(url, options);
+    let dbConnection = await mongoose.connect(url);
     let model = dbConnection.model(
       "ProblemsOfTheDay",
       probtimeSchema,
-      "problemsofthday"
+      "ProblemsOfTheDay"
     );
     return model;
   } catch (error) {
+    console.error("Mongoose connection error:", error);
     let err = new Error(
-      "Could not establish connection with DSAtracker database"
+      "Could not establish connection with database"
     );
     err.status = 500;
     throw err;
@@ -124,16 +121,16 @@ connection.getProblemsOfTheDayConnection = async () => {
 };
 connection.getloveBabbarSheetConnection = async () => {
   try {
-    let dbConnection = await mongoose.connect(url, options);
+    let dbConnection = await mongoose.connect(url);
     let model = dbConnection.model(
-      "loveBabbarSheet",
+      "LoveBabbarSheet",
       sheetloveBabbarSchema,
       "LoveBabbarSheet"
     );
     return model;
   } catch (error) {
     let err = new Error(
-      "Could not establish connection with DSAtracker database"
+      "Could not establish connection with database"
     );
     err.status = 500;
     throw err;
@@ -141,16 +138,16 @@ connection.getloveBabbarSheetConnection = async () => {
 };
 connection.getStriverSheetConnection = async () => {
   try {
-    let dbConnection = await mongoose.connect(url, options);
+    let dbConnection = await mongoose.connect(url);
     let model = dbConnection.model(
-      "striverSheet",
+      "StriverSheet",
       sheetStriverSchema,
       "StriverSheet"
     );
     return model;
   } catch (error) {
     let err = new Error(
-      "Could not establish connection with DSAtracker database"
+      "Could not establish connection with database"
     );
     err.status = 500;
     throw err;
@@ -158,12 +155,12 @@ connection.getStriverSheetConnection = async () => {
 };
 connection.getFrazSheetConnection = async () => {
   try {
-    let dbConnection = await mongoose.connect(url, options);
-    let model = dbConnection.model("frazSheet", sheetFrazSchema, "FrazSheet");
+    let dbConnection = await mongoose.connect(url);
+    let model = dbConnection.model("FrazSheet", sheetFrazSchema,"FrazSheet");
     return model;
   } catch (error) {
     let err = new Error(
-      "Could not establish connection with DSAtracker database"
+      "Could not establish connection with database"
     );
     err.status = 500;
     throw err;

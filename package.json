@@ -21,7 +21,7 @@
     "lru-cache": "^6.0.0",
     "moment": "^2.29.1",
     "mongodb": "^6.5.0",
-    "mongoose": "^5.12.3",
+    "mongoose": "^8.13.2",
     "nodemailer": "^6.9.13",
     "request": "^2.88.2"
   },

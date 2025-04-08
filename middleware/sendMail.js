@@ -13,13 +13,13 @@ sendMailObj.sendOtpMail = (textt) => {
     port: 465,
     debug: true,
     auth: {
-      user: "admin@trackdsa.com",
+      user: process.env.email,
       pass: process.env.password,
     },
   });
   const message = {
-    from: "admin@trackdsa.com",
-    to: "mayuragarwal2812@gmail.com",
+    from: process.env.email,
+    to: process.env.MY_EMAIL,
     subject: "Problems of the day",
     html: `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2;color:black">
           <div style="margin:20px auto;width:90%;padding:20px 0">
