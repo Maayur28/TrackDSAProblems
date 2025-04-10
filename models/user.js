@@ -51,7 +51,7 @@ userModel.addtoProblem = async (prod) => {
           { userid: obj.userid },
           { $push: { problems: { $each: prod.problems } } }
         );
-        if (addprod.nModified > 0)
+        if (addprod.modifiedCount > 0)
           return sorting(await model.findOne({ userid: obj.userid }));
         else {
           let err = new Error();
@@ -76,7 +76,7 @@ userModel.addtoProblem = async (prod) => {
         { userid: id },
         { $push: { problems: { $each: prod.problems } } }
       );
-      if (pushitem.nModified > 0) {
+      if (pushitem.modifiedCount > 0) {
         return sorting(await model.findOne({ userid: id }));
       } else {
         let err = new Error();
@@ -112,7 +112,7 @@ userModel.addtoNote = async (prod) => {
           { userid: obj.userid },
           { $push: { notes: { $each: prod.notes } } }
         );
-        if (addprod.nModified > 0)
+        if (addprod.modifiedCount > 0)
           return sorting(await model.findOne({ userid: obj.userid }));
         else {
           let err = new Error();
@@ -135,7 +135,8 @@ userModel.addtoNote = async (prod) => {
       { userid: id },
       { $push: { notes: { $each: prod.notes } } }
     );
-    if (pushitem.nModified > 0) {
+    console.log(pushitem);
+    if (pushitem.modifiedCount > 0) {
       return sortingNote(await model.findOne({ userid: id }));
     } else {
       let err = new Error();
@@ -179,7 +180,7 @@ userModel.editProblem = async (prod) => {
       },
     }
   );
-  if (updateQuan.nModified == 0) {
+  if (updateQuan.modifiedCount == 0) {
     let err = new Error();
     err.status = 500;
     err.message = "Sorry!Server is busy.Please try to update quantity later";
@@ -200,7 +201,7 @@ userModel.editNote = async (prod) => {
       },
     }
   );
-  if (updateQuan.nModified == 0) {
+  if (updateQuan.modifiedCount == 0) {
     let err = new Error();
     err.status = 500;
     err.message = "Sorry!Server is busy.Please try to update quantity later";
@@ -216,7 +217,7 @@ userModel.deleteProblem = async (obj) => {
     { userid: obj.userid },
     { $pull: { problems: { _id: { $in: obj.problems } } } }
   );
-  if (getTrack.nModified > 0) {
+  if (getTrack.modifiedCount > 0) {
     return sorting(await model.findOne({ userid: obj.userid }));
   } else {
     let err = new Error();
@@ -232,7 +233,7 @@ userModel.deleteNote = async (obj) => {
     { userid: obj.userid },
     { $pull: { notes: { _id: obj._id } } }
   );
-  if (getTrack.nModified > 0) {
+  if (getTrack.modifiedCount > 0) {
     return sortingNote(await model.findOne({ userid: obj.userid }));
   } else {
     let err = new Error();
@@ -311,13 +312,13 @@ userModel.getProbOfTheDay = async () => {
         current: arr,
       },
     });
-    if (add.nModified) {
+    if (add.modifiedCount) {
       let add1 = await model.updateOne({
         $pull: {
           problems: { $in: arr },
         },
       });
-      if (add1.nModified) {
+      if (add1.modifiedCount) {
         let add2 = await model.updateOne({
           $push: {
             problems: { $each: total[0].current },
